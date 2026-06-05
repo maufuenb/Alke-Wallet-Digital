@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Depositar | Billetera Digital</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+
+<body class="page-bg" data-page="deposit">
+  <div class="app-shell d-lg-flex">
+    <input type="checkbox" id="sidebar-toggle" class="sidebar-toggle">
+    <aside class="sidebar bg-white border-end p-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="h5 mb-0 text-primary">Billetera</h2>
+        <label for="sidebar-toggle" class="btn btn-sm btn-outline-secondary d-lg-none">X</label>
+      </div>
+      <nav class="nav flex-column gap-2">
+        <a href="menu.html" class="btn btn-outline-primary text-start">Menú Principal</a>
+        <a href="deposit.html" class="btn btn-primary text-start">Depositar</a>
+        <a href="sendMoney.html" class="btn btn-outline-primary text-start">Enviar Dinero</a>
+        <a href="transactions.html" class="btn btn-outline-primary text-start">Movimientos</a>
+        <a href="login.html" class="btn btn-outline-secondary text-start mt-3" data-logout>Cerrar sesión</a>
+      </nav>
+    </aside>
+    <label for="sidebar-toggle" class="sidebar-overlay"></label>
+
+    <div class="content-column flex-grow-1 d-flex flex-column">
+      <header class="bg-white border-bottom">
+        <div class="container-fluid py-3 d-flex justify-content-between align-items-center">
+          <div class="d-flex align-items-center gap-2">
+            <label for="sidebar-toggle" class="btn btn-outline-primary d-lg-none mb-0">☰</label>
+            <h1 class="h4 mb-0">Billetera Digital</h1>
+          </div>
+        </div>
+      </header>
+
+      <main class="container py-4 py-md-5 flex-grow-1">
+        <section class="card simple-card border-0 p-4 p-md-5">
+          <div class="mb-4">
+            <span class="badge d-inline-block bg-primary-subtle text-primary">Fondos</span>
+            <h2 class="mt-3 mb-1">Depositar</h2>
+            <p class="text-muted mb-0">Carga saldo en tu cuenta en pocos pasos.</p>
+          </div>
+
+          <div class="alert alert-light border mb-4">
+            Saldo actual: <strong data-current-balance>$ 0</strong>
+          </div>
+
+          <form id="depositForm" novalidate>
+            <div class="mb-4">
+              <label for="amount" class="form-label">Monto a depositar</label>
+              <input type="number" class="form-control form-control-lg" id="amount" placeholder="Ej: 50000" min="1"
+                required>
+            </div>
+            <div class="d-flex flex-column flex-sm-row gap-3">
+              <button type="submit" class="btn btn-primary btn-lg flex-fill">Realizar depósito</button>
+            </div>
+            <p id="depositSummary" class="text-success small mt-3 mb-0 d-none"></p>
+            <div id="depositMessage" class="alert d-none mt-3 mb-0" role="alert"></div>
+          </form>
+        </section>
+      </main>
+
+      <footer class="bg-white border-top">
+        <div class="container-fluid py-3 text-center text-muted small">
+          Billetera Digital - Pantalla de depósito
+        </div>
+      </footer>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/deposit.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+
+</html>
