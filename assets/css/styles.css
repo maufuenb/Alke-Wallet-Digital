@@ -1684,22 +1684,16 @@ textarea,
     [data-page="deposit"] .mobile-summary-grid,
     [data-page="send-money"] .mobile-summary-grid,
     [data-page="retirar"] .mobile-summary-grid {
-        justify-content: center;
+        justify-content: flex-start;
     }
 
     [data-page="deposit"] .mobile-summary-grid > [class*="col-"],
     [data-page="send-money"] .mobile-summary-grid > [class*="col-"] {
-        max-width: 720px;
+        max-width: none;
     }
 
     [data-page="retirar"] .mobile-summary-grid > [class*="col-"] {
-        max-width: 480px;
-    }
-
-    [data-page="deposit"] .row.g-4.align-items-start,
-    [data-page="send-money"] .row.g-4.align-items-start,
-    [data-page="retirar"] .row.g-4.align-items-start {
-        justify-content: center;
+        max-width: none;
     }
 
     [data-page="deposit"] .transfer-panel__header,
@@ -1710,7 +1704,7 @@ textarea,
 
     [data-page="send-money"] .transfer-choice-grid,
     [data-page="deposit"] .transfer-choice-grid {
-        grid-template-columns: repeat(2, minmax(320px, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         align-items: stretch;
     }
 
@@ -1720,12 +1714,33 @@ textarea,
         min-height: 184px;
     }
 
+    [data-page="send-money"] .transfer-choice-card,
+    [data-page="deposit"] .transfer-choice-card {
+        min-width: 0;
+    }
+
+    [data-page="send-money"] .transfer-choice-card__text,
+    [data-page="deposit"] .transfer-choice-card__text {
+        max-width: none;
+    }
+
     [data-page="retirar"] .transfer-choice-grid {
         max-width: 640px;
-        margin: 0 auto;
     }
 
     [data-page="send-money"] .d-flex.flex-column.flex-sm-row.gap-3.mt-4 {
-        justify-content: center;
+        justify-content: flex-start;
     }
+
+    [data-page="deposit"] .mobile-summary-grid,
+    [data-page="send-money"] .mobile-summary-grid,
+    [data-page="retirar"] .mobile-summary-grid,
+    [data-page="deposit"] .row.g-4.align-items-start,
+    [data-page="send-money"] .row.g-4.align-items-start,
+    [data-page="retirar"] .row.g-4.align-items-start {
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
 }
