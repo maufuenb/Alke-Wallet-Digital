@@ -9,9 +9,13 @@ function renderContactOptions() {
     $.each(state.contacts, (_, contact) => {
       const option = $("<option></option>")
         .val(contact.id)
-        .text(`${contact.name} - ${contact.alias}`);
+        .attr("title", `${contact.name} - ${contact.alias}`)
+        .text(`${contact.name} · ${contact.alias}`);
       select.append(option);
     });
+
+    enhanceModalSelects();
+    syncCustomSelect(select);
   }
 
   if (chips.length) {
@@ -56,30 +60,137 @@ function initSendMoneyPage() {
     return;
   }
 
+  const existingContactModalElement = $("#existingContactModal");
+  const existingContactModal = existingContactModalElement.length
+    ? bootstrap.Modal.getOrCreateInstance(existingContactModalElement[0])
+    : null;
+  const amountModalElement = $("#transferAmountModal");
+  const amountModal = amountModalElement.length
+    ? bootstrap.Modal.getOrCreateInstance(amountModalElement[0])
+    : null;
   const contactModalElement = $("#newContactModal");
-  const contactModal = contactModalElement.length ? bootstrap.Modal.getOrCreateInstance(contactModalElement[0]) : null;
+  const contactModal = contactModalElement.length
+    ? bootstrap.Modal.getOrCreateInstance(contactModalElement[0])
+    : null;
   const contactForm = $("#newContactForm");
   const transferForm = $("#transferForm");
   const contactMessage = $("#contactMessage");
   const transferMessage = $("#transferMessage");
   const cancelButton = $("#cancelContactForm");
+  const existingContactTrigger = $("[data-transfer-step='existing']");
+  const changeContactButton = $("[data-contact-change]");
   const contactSelect = $("#contactSelect");
   const transferAmount = $("#transferAmount");
   const availableBalance = $("[data-available-balance]");
   const contactChips = $("[data-contact-chips]");
+  const contactSearch = $("#contactSearch");
+  const contactAutocomplete = $("#contactAutocomplete");
   const contactName = $("#contactName");
   const contactCbu = $("#contactCbu");
   const contactAlias = $("#contactAlias");
   const contactBank = $("#contactBank");
+  const selectedContactLabel = $("[data-selected-contact-label]");
   const state = getWalletState();
 
   renderContactOptions();
   availableBalance.text(formatCurrency(state.balance));
 
-  function selectContact(contactId) {
-    contactSelect.val(contactId);
+  function updateSelectedContactLabel(contact) {
+    if (!contact) {
+      selectedContactLabel.text("Sin contacto");
+      return;
+    }
+
+    selectedContactLabel.text(`${contact.name} · ${contact.alias}`);
+  }
+
+  function openExistingContactStep() {
+    existingContactTrigger.addClass("active");
+    if (existingContactModal) {
+      existingContactModal.show();
+    }
+    setTimeout(() => contactSearch.trigger("focus"), 150);
+  }
+
+  function openAmountStep(contact) {
+    updateSelectedContactLabel(contact);
+    if (existingContactModal) {
+      existingContactModal.hide();
+    }
+    if (amountModal) {
+      amountModal.show();
+    }
+    setTimeout(() => transferAmount.trigger("focus"), 150);
+  }
+
+  function resetTransferFlow() {
+    transferForm.trigger("reset");
+    hideAlert(transferMessage);
+    contactSelect.val("");
     contactChips.find(".contact-chip").removeClass("active");
-    contactChips.find(`[data-contact-id="${contactId}"]`).addClass("active");
+    existingContactTrigger.removeClass("active");
+    updateSelectedContactLabel(null);
+  }
+
+  function selectContact(contactId) {
+    const currentState = getWalletState();
+    const contact = $.grep(currentState.contacts, (item) => item.id === contactId)[0];
+
+    if (!contact) {
+      updateSelectedContactLabel(null);
+      return;
+    }
+
+    contactSelect.val(contact.id);
+    contactSearch.val(contact.name);
+    contactChips.find(".contact-chip").removeClass("active");
+    contactChips.find(`[data-contact-id="${contact.id}"]`).addClass("active");
+    openAmountStep(contact);
+  }
+
+  function hideAutocomplete() {
+    contactAutocomplete.addClass("d-none").empty();
+  }
+
+  function renderAutocompleteResults(query) {
+    const normalizedQuery = String(query || "").trim().toLowerCase();
+    const currentState = getWalletState();
+
+    contactAutocomplete.empty();
+
+    if (!normalizedQuery) {
+      hideAutocomplete();
+      return;
+    }
+
+    const matches = $.grep(currentState.contacts, (contact) => {
+      const haystack = `${contact.name} ${contact.alias} ${contact.bank}`.toLowerCase();
+      return haystack.includes(normalizedQuery);
+    }).slice(0, 5);
+
+    if (!matches.length) {
+      contactAutocomplete
+        .removeClass("d-none")
+        .append('<div class="list-group-item text-muted">No se encontraron contactos.</div>');
+      return;
+    }
+
+    $.each(matches, (_, contact) => {
+      const item = $("<button></button>")
+        .attr({
+          type: "button",
+          role: "option"
+        })
+        .addClass("list-group-item list-group-item-action")
+        .attr("data-contact-id", contact.id)
+        .html(`
+          <strong>${contact.name}</strong>
+          <div class="small text-muted">${contact.alias} · ${contact.bank}</div>
+        `);
+      contactAutocomplete.append(item);
+    });
+
+    contactAutocomplete.removeClass("d-none");
   }
 
   if (cancelButton.length) {
@@ -112,8 +223,8 @@ function initSendMoneyPage() {
         return;
       }
 
-      updateWalletState((state) => {
-        state.contacts.push({
+      updateWalletState((walletState) => {
+        walletState.contacts.push({
           id: `c-${Date.now()}`,
           name,
           cbu,
@@ -124,11 +235,13 @@ function initSendMoneyPage() {
 
       contactForm.trigger("reset");
       renderContactOptions();
-      selectContact($("#contactSelect").val());
+      contactSearch.val(name);
+      renderAutocompleteResults(name);
       showAlert(contactMessage, "Contacto agregado correctamente.", "success");
       if (contactModal) {
         contactModal.hide();
       }
+      openExistingContactStep();
     });
   }
 
@@ -138,8 +251,65 @@ function initSendMoneyPage() {
     });
   }
 
+  if (existingContactTrigger.length) {
+    existingContactTrigger.on("click", () => {
+      openExistingContactStep();
+    });
+  }
+
+  if (changeContactButton.length) {
+    changeContactButton.on("click", () => {
+      if (amountModal) {
+        amountModal.hide();
+      }
+      openExistingContactStep();
+    });
+  }
+
   contactSelect.on("change", function () {
-    selectContact($(this).val());
+    syncCustomSelect(this);
+    const selectedId = $(this).val();
+
+    if (!selectedId) {
+      updateSelectedContactLabel(null);
+      return;
+    }
+
+    selectContact(selectedId);
+  });
+
+  if (contactSearch.length) {
+    contactSearch.on("input", function () {
+      renderAutocompleteResults($(this).val());
+    });
+
+    contactSearch.on("keydown", function (event) {
+      if (event.key === "Escape") {
+        hideAutocomplete();
+      }
+    });
+  }
+
+  if (contactAutocomplete.length) {
+    contactAutocomplete.on("click", "[data-contact-id]", function () {
+      const contactId = $(this).data("contact-id");
+      selectContact(contactId);
+      hideAutocomplete();
+    });
+  }
+
+  $(document).on("click.sendMoneyAutocomplete", function (event) {
+    if (!$(event.target).closest(".autocomplete-box").length) {
+      hideAutocomplete();
+    }
+  });
+
+  existingContactModalElement.on("hidden.bs.modal", function () {
+    existingContactTrigger.removeClass("active");
+  });
+
+  amountModalElement.on("hidden.bs.modal", function () {
+    hideAlert(transferMessage);
   });
 
   if (transferForm.length) {
@@ -182,6 +352,10 @@ function initSendMoneyPage() {
       });
 
       showAlert(transferMessage, `Transferencia realizada a ${contact.name}. Redirigiendo al menú principal.`, "success");
+      if (amountModal) {
+        amountModal.hide();
+      }
+      resetTransferFlow();
       navigateTo("menu.html", 1000);
     });
   }

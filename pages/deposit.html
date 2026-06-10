@@ -10,69 +10,278 @@
   <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
 
-<body class="page-bg" data-page="deposit">
-  <div class="app-shell d-lg-flex">
-    <input type="checkbox" id="sidebar-toggle" class="sidebar-toggle">
-    <aside class="sidebar bg-white border-end p-4">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="h5 mb-0 text-primary">Billetera</h2>
-        <label for="sidebar-toggle" class="btn btn-sm btn-outline-secondary d-lg-none">X</label>
+<body data-page="deposit" data-layout="app" data-title="Depositar | Billetera Digital">
+  <div data-layout-root></div>
+  <template data-page-content>
+    <section class="card simple-card border-0 p-4 p-md-5">
+      <div class="page-hero mb-4">
+        <div>
+          <span class="badge d-inline-block bg-primary-subtle text-primary">Fondos</span>
+          <h2 class="mt-3 mb-1">Depositar</h2>
+          <p class="text-muted mb-0">Elige cómo quieres ingresar la plata y te guiamos paso a paso.</p>
+        </div>
+        <div class="hero-icon">
+          <i class="fa-solid fa-arrow-down-wide-short"></i>
+        </div>
       </div>
-      <nav class="nav flex-column gap-2">
-        <a href="menu.html" class="btn btn-outline-primary text-start">Menú Principal</a>
-        <a href="deposit.html" class="btn btn-primary text-start">Depositar</a>
-        <a href="sendMoney.html" class="btn btn-outline-primary text-start">Enviar Dinero</a>
-        <a href="transactions.html" class="btn btn-outline-primary text-start">Movimientos</a>
-        <a href="login.html" class="btn btn-outline-secondary text-start mt-3" data-logout>Cerrar sesión</a>
-      </nav>
-    </aside>
-    <label for="sidebar-toggle" class="sidebar-overlay"></label>
 
-    <div class="content-column flex-grow-1 d-flex flex-column">
-      <header class="bg-white border-bottom">
-        <div class="container-fluid py-3 d-flex justify-content-between align-items-center">
-          <div class="d-flex align-items-center gap-2">
-            <label for="sidebar-toggle" class="btn btn-outline-primary d-lg-none mb-0">☰</label>
-            <h1 class="h4 mb-0">Billetera Digital</h1>
+      <div class="row g-3 mb-4 mobile-summary-grid">
+        <div class="col-12 col-sm-7 col-lg-7">
+          <div class="info-panel h-100">
+            <span class="info-panel__label">Saldo actual</span>
+            <strong class="info-panel__value" data-current-balance>$ 0</strong>
+            <p class="info-panel__text mb-0">Tu saldo se actualiza apenas terminamos el ingreso.</p>
           </div>
         </div>
-      </header>
+      </div>
 
-      <main class="container py-4 py-md-5 flex-grow-1">
-        <section class="card simple-card border-0 p-4 p-md-5">
-          <div class="mb-4">
-            <span class="badge d-inline-block bg-primary-subtle text-primary">Fondos</span>
-            <h2 class="mt-3 mb-1">Depositar</h2>
-            <p class="text-muted mb-0">Carga saldo en tu cuenta en pocos pasos.</p>
-          </div>
-
-          <div class="alert alert-light border mb-4">
-            Saldo actual: <strong data-current-balance>$ 0</strong>
-          </div>
-
-          <form id="depositForm" novalidate>
-            <div class="mb-4">
-              <label for="amount" class="form-label">Monto a depositar</label>
-              <input type="number" class="form-control form-control-lg" id="amount" placeholder="Ej: 50000" min="1"
-                required>
+      <div class="row g-4 align-items-start">
+        <div class="col-12 col-xl-7">
+          <div class="surface-panel deposit-panel h-100">
+            <div class="transfer-panel__header">
+              <div>
+                <span class="transfer-panel__eyebrow">Paso principal</span>
+                <h3 class="h4 mb-1">¿Cómo quieres ingresar la plata?</h3>
+                <p class="text-muted mb-0">Elige una opción y abriremos una ventana con los datos necesarios.</p>
+              </div>
             </div>
-            <div class="d-flex flex-column flex-sm-row gap-3">
-              <button type="submit" class="btn btn-primary btn-lg flex-fill">Realizar depósito</button>
-            </div>
-            <p id="depositSummary" class="text-success small mt-3 mb-0 d-none"></p>
-            <div id="depositMessage" class="alert d-none mt-3 mb-0" role="alert"></div>
-          </form>
-        </section>
-      </main>
 
-      <footer class="bg-white border-top">
-        <div class="container-fluid py-3 text-center text-muted small">
-          Billetera Digital - Pantalla de depósito
+            <div class="transfer-choice-grid">
+              <button type="button" class="transfer-choice-card" data-bs-toggle="modal" data-bs-target="#depositBankMethodModal">
+                <span class="transfer-choice-card__icon">
+                  <i class="fa-solid fa-building-columns"></i>
+                </span>
+                <span class="transfer-choice-card__content">
+                  <span class="transfer-choice-card__title">Desde otro banco</span>
+                  <span class="transfer-choice-card__text">Elige si quieres ingresar con débito o con una transferencia bancaria.</span>
+                </span>
+              </button>
+              <button type="button" class="transfer-choice-card" data-bs-toggle="modal" data-bs-target="#depositGiftCardModal">
+                <span class="transfer-choice-card__icon">
+                  <i class="fa-solid fa-gift"></i>
+                </span>
+                <span class="transfer-choice-card__content">
+                  <span class="transfer-choice-card__title">Con gift card</span>
+                  <span class="transfer-choice-card__text">Canjea un código de regalo y súmalo directo a tu saldo.</span>
+                </span>
+              </button>
+            </div>
+          </div>
         </div>
-      </footer>
+
+      
+      </div>
+    </section>
+  </template>
+
+  <template data-page-extra>
+    <div class="modal fade" id="depositBankMethodModal" tabindex="-1" aria-labelledby="depositBankMethodModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div>
+              <span class="section-heading__eyebrow d-block">Paso 1</span>
+              <h2 class="modal-title fs-5" id="depositBankMethodModalLabel">Elige cómo quieres ingresar</h2>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <div class="transfer-choice-grid">
+              <button type="button" class="transfer-choice-card" data-bs-target-modal="depositDebitModal">
+                <span class="transfer-choice-card__icon">
+                  <i class="fa-solid fa-credit-card"></i>
+                </span>
+                <span class="transfer-choice-card__content">
+                  <span class="transfer-choice-card__title">Tarjeta de débito</span>
+                  <span class="transfer-choice-card__text">Haz un cargo usando una tarjeta de débito de prueba.</span>
+                </span>
+              </button>
+              <button type="button" class="transfer-choice-card" data-bs-target-modal="depositTransferModal">
+                <span class="transfer-choice-card__icon">
+                  <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                </span>
+                <span class="transfer-choice-card__content">
+                  <span class="transfer-choice-card__title">Transferencia bancaria</span>
+                  <span class="transfer-choice-card__text">Revisa los datos de abono y confirma el monto transferido.</span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+
+    <div class="modal fade" id="depositDebitModal" tabindex="-1" aria-labelledby="depositDebitModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div>
+              <span class="section-heading__eyebrow d-block">Paso 2</span>
+              <h2 class="modal-title fs-5" id="depositDebitModalLabel">Ingresa con tarjeta de débito</h2>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <form id="depositDebitForm" novalidate>
+              <div class="mb-3">
+                <label for="debitBankSource" class="form-label">Banco de origen</label>
+                <select id="debitBankSource" class="form-select form-select-lg">
+                  <option value="">Selecciona un banco</option>
+                </select>
+                <div class="form-text" id="debitBankSourceHelp">Selecciona desde qué banco quieres hacer el cargo.</div>
+              </div>
+
+              <div class="mb-3">
+                <label for="debitCardNumber" class="form-label">Número de tarjeta de débito</label>
+                <input type="text" class="form-control" id="debitCardNumber" placeholder="Ingresa el número de la tarjeta">
+                <div class="form-text" id="debitCardNumberHint">Tarjeta de prueba: selecciona un banco para ver un ejemplo.</div>
+              </div>
+
+              <div class="mb-3">
+                <label for="debitCardHolder" class="form-label">Nombre del titular</label>
+                <input type="text" class="form-control" id="debitCardHolder" placeholder="Como aparece en la tarjeta">
+                <div class="form-text" id="debitCardHolderHint">Titular de prueba: selecciona un banco para ver un ejemplo.</div>
+              </div>
+
+              <div class="row g-3 mb-3">
+                <div class="col-6">
+                  <label for="debitCardExpiry" class="form-label">Vencimiento</label>
+                  <input type="text" class="form-control" id="debitCardExpiry" placeholder="MM/AA">
+                  <div class="form-text" id="debitCardExpiryHint">Ejemplo: 12/28</div>
+                </div>
+                <div class="col-6">
+                  <label for="debitCardCvv" class="form-label">CVV</label>
+                  <input type="text" class="form-control" id="debitCardCvv" placeholder="123">
+                  <div class="form-text" id="debitCardCvvHint">Ejemplo: 321</div>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label for="debitAmount" class="form-label">Monto a ingresar</label>
+                <input type="number" class="form-control form-control-lg" id="debitAmount" placeholder="Ej: 50000" min="1">
+                <div class="form-text" id="debitDepositSummary">Haz un cargo desde tu tarjeta de débito para sumarlo al saldo.</div>
+              </div>
+
+              <div class="d-flex flex-column flex-sm-row gap-3">
+                <button type="submit" class="btn btn-primary btn-lg flex-fill">Ingresar con débito</button>
+              </div>
+              <p id="debitDepositResult" class="small mt-3 mb-0 d-none"></p>
+              <div id="debitDepositMessage" class="alert d-none mt-3 mb-0" role="alert"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="depositTransferModal" tabindex="-1" aria-labelledby="depositTransferModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div>
+              <span class="section-heading__eyebrow d-block">Paso 2</span>
+              <h2 class="modal-title fs-5" id="depositTransferModalLabel">Ingresa con transferencia bancaria</h2>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <form id="depositTransferForm" novalidate>
+              <div class="mb-3">
+                <label for="transferBankSource" class="form-label">Banco desde donde transferiste</label>
+                <select id="transferBankSource" class="form-select form-select-lg">
+                  <option value="">Selecciona un banco</option>
+                </select>
+                <div class="form-text" id="transferBankSourceHelp">Elige el banco de origen para mostrar los datos de abono.</div>
+              </div>
+
+              <div class="surface-panel p-3 mb-3">
+                <span class="transfer-panel__eyebrow d-block mb-2">Datos de prueba para transferir</span>
+                <div class="small text-muted d-grid gap-2">
+                  <div id="transferHolderHint">Titular: selecciona un banco para ver el ejemplo.</div>
+                  <div id="transferRutHint">RUT: selecciona un banco para ver el ejemplo.</div>
+                  <div id="transferAccountTypeHint">Tipo de cuenta: selecciona un banco para ver el ejemplo.</div>
+                  <div id="transferAccountNumberHint">Número de cuenta: selecciona un banco para ver el ejemplo.</div>
+                  <div id="transferEmailHint">Correo: selecciona un banco para ver el ejemplo.</div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="transferReference" class="form-label">Comprobante o referencia</label>
+                <input type="text" class="form-control" id="transferReference" placeholder="Ej: TRX-458921">
+                <div class="form-text" id="transferReferenceHint">Puedes usar un código simple para simular el comprobante.</div>
+              </div>
+
+              <div class="mb-4">
+                <label for="transferAmount" class="form-label">Monto transferido</label>
+                <input type="number" class="form-control form-control-lg" id="transferAmount" placeholder="Ej: 50000" min="1">
+                <div class="form-text" id="transferDepositSummary">Confirma cuánto transferiste para acreditarlo en tu saldo.</div>
+              </div>
+
+              <div class="d-flex flex-column flex-sm-row gap-3">
+                <button type="submit" class="btn btn-primary btn-lg flex-fill">Confirmar transferencia</button>
+              </div>
+              <p id="transferDepositResult" class="small mt-3 mb-0 d-none"></p>
+              <div id="transferDepositMessage" class="alert d-none mt-3 mb-0" role="alert"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="depositGiftCardModal" tabindex="-1" aria-labelledby="depositGiftCardModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div>
+              <span class="section-heading__eyebrow d-block">Paso 1</span>
+              <h2 class="modal-title fs-5" id="depositGiftCardModalLabel">Canjea una gift card</h2>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <form id="depositGiftCardForm" novalidate>
+              <div class="mb-3">
+                <label for="giftCardSource" class="form-label">Elige una gift card</label>
+                <select id="giftCardSource" class="form-select form-select-lg">
+                  <option value="">Selecciona una gift card</option>
+                </select>
+                <div class="form-text">Puedes usar uno de los códigos de ejemplo que dejamos cargados.</div>
+              </div>
+
+              <div class="mb-3">
+                <label for="giftCardCode" class="form-label">Código de la gift card</label>
+                <input type="text" class="form-control" id="giftCardCode" placeholder="Ingresa el código">
+                <div class="form-text" id="giftCardCodeHint">Código de prueba: selecciona una gift card para ver el ejemplo.</div>
+              </div>
+
+              <div class="mb-3">
+                <label for="giftCardPin" class="form-label">PIN o clave</label>
+                <input type="text" class="form-control" id="giftCardPin" placeholder="Ingresa la clave">
+                <div class="form-text" id="giftCardPinHint">PIN de prueba: selecciona una gift card para ver el ejemplo.</div>
+              </div>
+
+              <div class="mb-4">
+                <label for="giftAmount" class="form-label">Monto a depositar</label>
+                <input type="number" class="form-control form-control-lg" id="giftAmount" placeholder="Ej: 15000" min="1">
+                <div class="form-text" id="giftDepositSummary">Usa un código de regalo para sumar saldo sin depender de otro banco.</div>
+              </div>
+
+              <div class="d-flex flex-column flex-sm-row gap-3">
+                <button type="submit" class="btn btn-primary btn-lg flex-fill">Canjear gift card</button>
+              </div>
+              <p id="giftDepositSummaryText" class="small mt-3 mb-0 d-none"></p>
+              <div id="giftDepositMessage" class="alert d-none mt-3 mb-0" role="alert"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <script src="../assets/js/layout.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
   <script src="../assets/js/data.js"></script>
   <script src="../assets/js/deposit.js"></script>
   <script src="../assets/js/main.js"></script>

@@ -4,6 +4,7 @@ $(function () {
     login: window.initLoginPage,
     menu: window.initMenuPage,
     deposit: window.initDepositPage,
+    retirar: window.initRetirarPage,
     "send-money": window.initSendMoneyPage,
     transactions: window.initTransactionsPage
   };

@@ -10,71 +10,93 @@
   <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
 
-<body class="page-bg" data-page="menu">
-  <div class="app-shell d-lg-flex">
-    <input type="checkbox" id="sidebar-toggle" class="sidebar-toggle">
-    <aside class="sidebar bg-white border-end p-4">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="h5 mb-0 text-primary">Billetera</h2>
-        <label for="sidebar-toggle" class="btn btn-sm btn-outline-secondary d-lg-none">X</label>
+<body data-page="menu" data-layout="app" data-title="Menú Principal | Billetera Digital">
+  <div data-layout-root></div>
+  <template data-page-content>
+    <section class="card simple-card border-0 p-4 p-md-5">
+      <div class="mb-4">
+        <span class="badge d-inline-block bg-primary-subtle text-primary">Panel</span>
+        <h2 class="mt-3 mb-1">Menú Principal</h2>
+        <p class="text-muted mb-0">Aquí tienes a mano lo más importante para mover tu plata.</p>
       </div>
-      <nav class="nav flex-column gap-2">
-        <a href="menu.html" class="btn btn-primary text-start">Menú Principal</a>
-        <a href="deposit.html" class="btn btn-outline-primary text-start">Depositar</a>
-        <a href="sendMoney.html" class="btn btn-outline-primary text-start">Enviar Dinero</a>
-        <a href="transactions.html" class="btn btn-outline-primary text-start">Movimientos</a>
-        <a href="login.html" class="btn btn-outline-secondary text-start mt-3" data-logout>Cerrar sesión</a>
-      </nav>
-    </aside>
-    <label for="sidebar-toggle" class="sidebar-overlay"></label>
 
-    <div class="content-column flex-grow-1 d-flex flex-column">
-      <header class="bg-white border-bottom">
-        <div class="container-fluid py-3 d-flex justify-content-between align-items-center">
-          <div class="d-flex align-items-center gap-2">
-            <label for="sidebar-toggle" class="btn btn-outline-primary d-lg-none mb-0">☰</label>
-            <h1 class="h4 mb-0">Billetera Digital</h1>
+      <div id="menuMessage" class="alert alert-info d-none mb-4" role="alert" data-flash-message></div>
+
+      <div class="amount-box bg-primary text-white p-4 mb-4">
+        <p class="mb-2">Lo que tienes disponible</p>
+        <div class="display-6 fw-bold" data-wallet-balance>$ 245.000</div>
+        <p class="mb-0 mt-2">Listo para lo que necesites hacer ahora</p>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
+        <div>
+          <h3 class="h5 mb-1">Acciones rápidas</h3>
+          <p class="text-muted mb-0">Tus accesos de siempre, más algunas ideas que vienen en camino.</p>
+        </div>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-6 col-md-4 col-xl-3">
+          <a href="deposit.html" class="quick-action quick-action--live text-decoration-none" data-redirect-label="depósito">
+            <span class="quick-action__icon">
+              <i class="fa-solid fa-arrow-down-wide-short"></i>
+            </span>
+            <span class="quick-action__title">Depositar</span>
+            <span class="quick-action__text">Suma plata a tu cuenta en un momento</span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-xl-3">
+          <a href="retirar.html" class="quick-action quick-action--live text-decoration-none" data-redirect-label="retiro de fondos">
+            <span class="quick-action__icon">
+              <i class="fa-solid fa-arrow-up-wide-short"></i>
+            </span>
+            <span class="quick-action__title">Retirar</span>
+            <span class="quick-action__text">Retira plata de tu billetera cuando quieras</span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-xl-3">
+          <a href="sendMoney.html" class="quick-action quick-action--live text-decoration-none" data-redirect-label="enviar dinero">
+            <span class="quick-action__icon">
+              <i class="fa-solid fa-paper-plane"></i>
+            </span>
+            <span class="quick-action__title">Transferir</span>
+            <span class="quick-action__text">Manda plata a tus contactos de forma simple</span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-xl-3">
+          <a href="transactions.html" class="quick-action quick-action--live text-decoration-none" data-redirect-label="últimos movimientos">
+            <span class="quick-action__icon">
+              <i class="fa-solid fa-clock-rotate-left"></i>
+            </span>
+            <span class="quick-action__title">Movimientos</span>
+            <span class="quick-action__text">Mira lo último que pasó en tu cuenta</span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-xl-3">
+          <div class="quick-action quick-action--coming-soon" aria-disabled="true">
+            <span class="quick-action__ribbon">Próximamente</span>
+            <span class="quick-action__icon">
+              <i class="fa-solid fa-mobile-screen-button"></i>
+            </span>
+            <span class="quick-action__title">Recargas</span>
+            <span class="quick-action__text">Recargas, cuentas y otras cosas útiles</span>
           </div>
         </div>
-      </header>
-
-      <main class="container py-4 py-md-5 flex-grow-1">
-        <section class="card simple-card border-0 p-4 p-md-5">
-          <div class="mb-4">
-            <span class="badge d-inline-block bg-primary-subtle text-primary">Panel</span>
-            <h2 class="mt-3 mb-1">Menú Principal</h2>
-            <p class="text-muted mb-0">Gestiona tu dinero de forma simple y segura.</p>
+        <div class="col-6 col-md-4 col-xl-3">
+          <div class="quick-action quick-action--coming-soon" aria-disabled="true">
+            <span class="quick-action__ribbon">Próximamente</span>
+            <span class="quick-action__icon">
+              <i class="fa-solid fa-qrcode"></i>
+            </span>
+            <span class="quick-action__title">Pagar QR</span>
+            <span class="quick-action__text">Escanea y paga sin vueltas</span>
           </div>
-
-          <div id="menuMessage" class="alert alert-info d-none mb-4" role="alert" data-flash-message></div>
-
-          <div class="amount-box bg-primary text-white p-4 mb-4">
-            <p class="mb-2">Saldo actual</p>
-            <div class="display-6 fw-bold" data-wallet-balance>$ 245.000</div>
-            <p class="mb-0 mt-2">Disponible para tus próximos movimientos</p>
-          </div>
-
-          <div class="row g-3">
-            <div class="col-12 col-md-4">
-              <a href="deposit.html" class="btn btn-outline-primary w-100 py-3" data-redirect-label="depósito">Depositar</a>
-            </div>
-            <div class="col-12 col-md-4">
-              <a href="sendMoney.html" class="btn btn-outline-primary w-100 py-3" data-redirect-label="enviar dinero">Enviar Dinero</a>
-            </div>
-            <div class="col-12 col-md-4">
-              <a href="transactions.html" class="btn btn-outline-primary w-100 py-3" data-redirect-label="últimos movimientos">Últimos Movimientos</a>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <footer class="bg-white border-top">
-        <div class="container-fluid py-3 text-center text-muted small">
-          Billetera Digital - Menú principal
         </div>
-      </footer>
-    </div>
-  </div>
+      </div>
+    </section>
+  </template>
+
+  <script src="../assets/js/layout.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="../assets/js/data.js"></script>
   <script src="../assets/js/menu.js"></script>
