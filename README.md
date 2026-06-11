@@ -10,7 +10,7 @@ El proyecto simula una experiencia bancaria moderna con foco en:
 - persistencia local de estado
 - diseño responsive con comportamiento distinto entre desktop y mobile
 
-## Demo funcional
+## Demo funcional https://maufuenb.github.io/Alke-Wallet-Digital/
 
 La aplicación parte en:
 
