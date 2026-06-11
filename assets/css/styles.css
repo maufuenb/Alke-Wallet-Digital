@@ -946,9 +946,14 @@ textarea {
 }
 
 .app-header {
-    position: relative;
+    position: sticky;
+    top: 0;
     z-index: 1105;
     overflow: visible;
+}
+
+.app-footer {
+    position: static !important;
 }
 
 .app-header .container-fluid {
@@ -1631,6 +1636,27 @@ textarea,
     gap: 0.9rem;
 }
 
+[data-page="transactions"] .movement-scroll {
+    max-height: min(60vh, 560px);
+    overflow-y: auto;
+    padding-right: 0.35rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.16) transparent;
+}
+
+[data-page="transactions"] .movement-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+[data-page="transactions"] .movement-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+}
+
+[data-page="transactions"] .movement-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
 [data-page="transactions"] .list-group-item + .list-group-item {
     border-top-width: 1px;
 }
@@ -1783,7 +1809,7 @@ textarea,
     }
 
     .content-column main.container {
-        padding-bottom: 5.9rem !important;
+        padding-bottom: calc(var(--app-footer-height) + 0.65rem) !important;
     }
 
     .app-footer .container-fluid {
@@ -1814,7 +1840,7 @@ textarea,
 
     .content-column main.container {
         padding-top: 1rem !important;
-        padding-bottom: 5.75rem !important;
+        padding-bottom: calc(var(--app-footer-height) + 0.4rem) !important;
         padding-left: 0.85rem;
         padding-right: 0.85rem;
     }
@@ -2047,6 +2073,11 @@ textarea,
 
     .movement-item__meta {
         gap: 0.45rem;
+    }
+
+    [data-page="transactions"] .movement-scroll {
+        max-height: min(52vh, 460px);
+        padding-right: 0.2rem;
     }
 
     .modal.fade .modal-dialog {
