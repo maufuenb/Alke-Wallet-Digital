@@ -106,21 +106,29 @@ function initSendMoneyPage() {
 
   function openExistingContactStep() {
     existingContactTrigger.addClass("active");
-    if (existingContactModal) {
-      existingContactModal.show();
+
+    if (contactModalElement.hasClass("show")) {
+      transitionBetweenModals(contactModalElement, existingContactModalElement, () => contactSearch.trigger("focus"));
+      return;
     }
-    setTimeout(() => contactSearch.trigger("focus"), 150);
+
+    if (amountModalElement.hasClass("show")) {
+      transitionBetweenModals(amountModalElement, existingContactModalElement, () => contactSearch.trigger("focus"));
+      return;
+    }
+
+    transitionBetweenModals(null, existingContactModalElement, () => contactSearch.trigger("focus"));
   }
 
   function openAmountStep(contact) {
     updateSelectedContactLabel(contact);
-    if (existingContactModal) {
-      existingContactModal.hide();
+
+    if (existingContactModalElement.hasClass("show")) {
+      transitionBetweenModals(existingContactModalElement, amountModalElement, () => transferAmount.trigger("focus"));
+      return;
     }
-    if (amountModal) {
-      amountModal.show();
-    }
-    setTimeout(() => transferAmount.trigger("focus"), 150);
+
+    transitionBetweenModals(null, amountModalElement, () => transferAmount.trigger("focus"));
   }
 
   function resetTransferFlow() {

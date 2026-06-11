@@ -199,13 +199,7 @@ function initDepositPage() {
       return;
     }
 
-    if (bankMethodModal) {
-      bankMethodModal.hide();
-    }
-
-    setTimeout(() => {
-      bootstrap.Modal.getOrCreateInstance(targetElement).show();
-    }, 180);
+    transitionBetweenModals(bankMethodModalElement, targetElement);
   });
 
   debitBankSource.on("change", function () {

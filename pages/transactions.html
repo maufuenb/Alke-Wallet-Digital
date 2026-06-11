@@ -28,13 +28,13 @@
 			<div class="row g-3 mb-4">
 				<div class="col-12 col-lg-5">
 					<div class="surface-panel h-100">
-				<label for="movementFilter" class="form-label">Filtrar por tipo de movimiento</label>
-				<select id="movementFilter" class="form-select">
-					<option value="all">Todos</option>
-					<option value="deposit">Depósitos</option>
-					<option value="transfer">Transferencias</option>
-					<option value="withdrawal">Retiros</option>
-				</select>
+						<label for="movementFilter" class="form-label">Filtrar por tipo de movimiento</label>
+						<select id="movementFilter" class="form-select">
+							<option value="all">Todos</option>
+							<option value="deposit">Depósitos</option>
+							<option value="transfer">Transferencias</option>
+							<option value="withdrawal">Retiros</option>
+						</select>
 					</div>
 				</div>
 				<div class="col-12 col-lg-7">
@@ -48,7 +48,17 @@
 				</div>
 			</div>
 
-			<div class="list-group mb-4" data-movement-list></div>
+			<div class="surface-panel mb-4">
+				<div class="section-heading mb-3">
+					<div>
+						<span class="section-heading__eyebrow">Resumen</span>
+						<h3 class="h5 mb-1">Actividad reciente</h3>
+						<p class="text-muted mb-0">El historial se organiza en bloques más legibles para desktop y móvil.</p>
+					</div>
+					<span class="section-heading__icon"><i class="fa-solid fa-wallet"></i></span>
+				</div>
+				<div class="list-group" data-movement-list></div>
+			</div>
 
 			<a href="menu.html" class="btn btn-primary">Volver al Menú Principal</a>
 		</section>

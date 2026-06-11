@@ -12,6 +12,7 @@
   const contentTemplate = document.querySelector("[data-page-content]");
   const extraTemplate = document.querySelector("[data-page-extra]");
   const fontAwesomeHref = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css";
+  const bootstrapBundleSrc = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js";
 
   document.title = title;
 
@@ -29,6 +30,8 @@
     { href: "sendMoney.html", page: "send-money", label: "Enviar Dinero", icon: "fa-paper-plane" },
     { href: "transactions.html", page: "transactions", label: "Movimientos", icon: "fa-clock-rotate-left" }
   ];
+  const currentNavItem = appNavItems.find((item) => item.page === page);
+  const currentPageLabel = currentNavItem ? currentNavItem.label : "Billetera Digital";
 
   function ensureFontAwesome() {
     const hasFontAwesome = document.querySelector(`link[href="${fontAwesomeHref}"]`);
@@ -43,15 +46,39 @@
     document.head.appendChild(link);
   }
 
+  function ensureBootstrapBundle() {
+    const hasBootstrapBundle = document.querySelector(`script[src="${bootstrapBundleSrc}"]`);
+
+    if (hasBootstrapBundle || window.bootstrap) {
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = bootstrapBundleSrc;
+    document.body.appendChild(script);
+  }
+
   function getNavMarkup() {
     return appNavItems.map((item) => {
       const buttonClass = item.page === page ? "btn btn-primary text-start" : "btn btn-outline-primary text-start";
       return `
-        <a href="${item.href}" class="${buttonClass}">
+        <a href="${item.href}" class="${buttonClass}" data-nav-link="${item.page}">
           <span class="d-inline-flex align-items-center gap-2">
             <i class="fa-solid ${item.icon}"></i>
             <span>${item.label}</span>
           </span>
+        </a>
+      `;
+    }).join("");
+  }
+
+  function getMobileNavMarkup() {
+    return appNavItems.map((item) => {
+      const linkClass = item.page === page ? "app-mobile-nav__link active" : "app-mobile-nav__link";
+      return `
+        <a href="${item.href}" class="${linkClass}" data-mobile-nav-link="${item.page}">
+          <i class="fa-solid ${item.icon}"></i>
+          <span>${item.label}</span>
         </a>
       `;
     }).join("");
@@ -72,6 +99,49 @@
     `;
   }
 
+  function getTopbarCopy() {
+    return `
+      <div class="app-topbar__copy">
+        <span class="app-topbar__eyebrow">Panel digital</span>
+        <strong class="app-topbar__title">${currentPageLabel}</strong>
+      </div>
+    `;
+  }
+
+  function getTopbarMeta() {
+    return `
+      <div class="app-topbar__meta">
+        <span class="app-topbar__pill app-topbar__pill--user">
+          <i class="fa-regular fa-user"></i>
+          Usuario demo
+        </span>
+      </div>
+    `;
+  }
+
+  function getMobileUserMenu() {
+    return `
+      <div class="dropdown d-lg-none">
+        <button
+          type="button"
+          class="btn btn-outline-primary app-mobile-user-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          aria-label="Abrir opciones de usuario">
+          <i class="fa-regular fa-user"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-end app-mobile-user-menu">
+          <span class="dropdown-item-text small text-muted">Usuario demo</span>
+          <div class="dropdown-divider"></div>
+          <a href="login.html" class="dropdown-item app-mobile-user-menu__item text-danger" data-logout>
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Cerrar sesión</span>
+          </a>
+        </div>
+      </div>
+    `;
+  }
+
   function syncAppShellOffsets() {
     const header = root.querySelector(".app-header");
     const footer = root.querySelector(".app-footer");
@@ -86,6 +156,7 @@
 
   function renderAuthLayout() {
     ensureFontAwesome();
+    ensureBootstrapBundle();
     body.className = "page-bg d-flex flex-column";
     root.innerHTML = `
       <div class="auth-shell d-flex flex-column min-vh-100">
@@ -115,47 +186,69 @@
 
   function renderAppLayout() {
     ensureFontAwesome();
+    ensureBootstrapBundle();
     body.className = "page-bg";
     root.innerHTML = `
-      <div class="app-shell d-lg-flex">
-        <input type="checkbox" id="sidebar-toggle" class="sidebar-toggle">
-        <aside class="sidebar bg-white border-end p-4">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="h5 mb-0 text-primary">Navegación</h2>
-            <label for="sidebar-toggle" class="btn btn-sm btn-outline-secondary d-lg-none">X</label>
-          </div>
-          <nav class="nav flex-column gap-2">
-            ${getNavMarkup()}
-            <a href="login.html" class="btn btn-outline-secondary text-start text-danger mt-3" data-logout>
-              <span class="d-inline-flex align-items-center gap-2">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                <span>Cerrar sesión</span>
-              </span>
-            </a>
-          </nav>
-        </aside>
-        <label for="sidebar-toggle" class="sidebar-overlay"></label>
-
-        <div class="content-column flex-grow-1 d-flex flex-column">
-          <header class="app-header bg-white border-bottom">
-            <div class="container-fluid py-3 d-flex justify-content-between align-items-center">
-              <div class="d-flex align-items-center gap-2">
+      <div class="app-shell d-flex flex-column">
+        <header class="app-header bg-white border-bottom">
+          <div class="container-fluid py-3 d-flex justify-content-between align-items-center gap-3">
+            <div class="app-header__side app-header__side--left d-flex align-items-center gap-3 min-w-0">
+              <div class="d-flex align-items-center gap-2 app-topbar-brand">
                 ${getBrandMarkup()}
               </div>
-              <label for="sidebar-toggle" class="btn btn-outline-primary d-lg-none mb-0">☰</label>
             </div>
-          </header>
+            <div class="app-header__center min-w-0">
+              ${getTopbarCopy()}
+            </div>
+            <div class="app-header__side app-header__side--right d-flex align-items-center justify-content-end">
+            <div class="app-topbar__status d-flex d-lg-none">
+              ${getMobileUserMenu()}
+            </div>
+            <div class="app-topbar__status d-none d-lg-flex">
+              ${getTopbarMeta()}
+            </div>
+            </div>
+          </div>
+        </header>
 
-          <main class="container py-4 py-md-5 flex-grow-1">
-            ${content}
-          </main>
+        <div class="app-body d-lg-flex flex-grow-1">
+          <input type="checkbox" id="sidebar-toggle" class="sidebar-toggle">
+          <aside class="sidebar bg-white border-end p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h2 class="h5 mb-0 text-primary">Navegación</h2>
+              <label for="sidebar-toggle" class="btn btn-sm btn-outline-secondary d-lg-none" aria-label="Cerrar menú">
+                <i class="fa-solid fa-xmark"></i>
+              </label>
+            </div>
+            <nav class="nav flex-column gap-2">
+              ${getNavMarkup()}
+              <a href="login.html" class="btn btn-outline-secondary text-start text-danger mt-3" data-logout>
+                <span class="d-inline-flex align-items-center gap-2">
+                  <i class="fa-solid fa-right-from-bracket"></i>
+                  <span>Cerrar sesión</span>
+                </span>
+              </a>
+            </nav>
+          </aside>
+          <label for="sidebar-toggle" class="sidebar-overlay"></label>
 
-          <footer class="app-footer bg-white border-top position-sticky bottom-0">
-            <div class="container-fluid py-3 text-center text-muted small">
+          <div class="content-column flex-grow-1 d-flex flex-column">
+            <main class="container py-4 py-md-5 flex-grow-1">
+              ${content}
+            </main>
+          </div>
+        </div>
+
+        <footer class="app-footer bg-white border-top position-sticky bottom-0">
+          <div class="container-fluid py-3">
+            <div class="app-footer__desktop text-center text-muted small d-none d-lg-block">
               Billetera Digital
             </div>
-          </footer>
-        </div>
+            <nav class="app-mobile-nav d-lg-none" aria-label="Navegación principal móvil">
+              ${getMobileNavMarkup()}
+            </nav>
+          </div>
+        </footer>
       </div>
 
       ${extraContent}

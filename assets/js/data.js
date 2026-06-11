@@ -278,6 +278,60 @@ function navigateTo(url, delay = 0) {
   }, delay);
 }
 
+function cleanupModalArtifacts() {
+  if ($(".modal.show").length) {
+    return;
+  }
+
+  $("body").removeClass("modal-open").css("padding-right", "");
+  $(".modal-backdrop").remove();
+}
+
+function resolveModalElement(modalRef) {
+  if (!modalRef) {
+    return null;
+  }
+
+  if (modalRef.jquery) {
+    return modalRef[0] || null;
+  }
+
+  if (typeof modalRef === "string") {
+    return document.querySelector(modalRef);
+  }
+
+  return modalRef;
+}
+
+function transitionBetweenModals(currentModalRef, nextModalRef, afterShow) {
+  const currentElement = resolveModalElement(currentModalRef);
+  const nextElement = resolveModalElement(nextModalRef);
+
+  if (!nextElement || !window.bootstrap) {
+    return;
+  }
+
+  const showNextModal = () => {
+    cleanupModalArtifacts();
+    bootstrap.Modal.getOrCreateInstance(nextElement).show();
+
+    if ($.isFunction(afterShow)) {
+      setTimeout(afterShow, 150);
+    }
+  };
+
+  if (!currentElement || !$(currentElement).hasClass("show")) {
+    showNextModal();
+    return;
+  }
+
+  $(currentElement).one("hidden.bs.modal.modalTransition", function () {
+    showNextModal();
+  });
+
+  bootstrap.Modal.getOrCreateInstance(currentElement).hide();
+}
+
 function enhanceModalSelects(scope = document) {
   $(scope).find(".modal-content select.form-select").each(function () {
     const select = $(this);

@@ -25,46 +25,69 @@
         </div>
       </div>
 
-      <div class="row g-3 mb-4 mobile-summary-grid">
-        <div class="col-12 col-sm-7 col-lg-7">
-          <div class="info-panel h-100">
-            <span class="info-panel__label">Saldo disponible</span>
-            <strong class="info-panel__value" data-current-balance>$ 0</strong>
-            <p class="info-panel__text mb-0">Puedes mover solo el dinero que ya tienes disponible.</p>
-          </div>
-        </div>
-        <div class="col-12 col-sm-5 col-lg-5">
-          <div class="mini-stat h-100">
-            <span class="mini-stat__icon"><i class="fa-solid fa-shield-halved"></i></span>
-            <div>
-              <strong class="mini-stat__title">Retiro guiado</strong>
-              <p class="mini-stat__text mb-0">Con pasos simples para que el flujo se sienta más real.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div class="row g-4 align-items-start">
         <div class="col-12 col-xl-7">
-          <div class="surface-panel deposit-panel h-100">
-            <div class="transfer-panel__header">
-              <div>
-                <span class="transfer-panel__eyebrow">Paso principal</span>
-                <h3 class="h4 mb-1">¿Cómo quieres retirar?</h3>
-                <p class="text-muted mb-0">Escoge una opción y abriremos una ventana con el paso a paso.</p>
+          <div class="desktop-flow-column">
+            <div class="row g-3 mobile-summary-grid">
+              <div class="col-12 col-sm-7 col-lg-7">
+                <div class="info-panel h-100">
+                  <span class="info-panel__label">Saldo disponible</span>
+                  <strong class="info-panel__value" data-current-balance>$ 0</strong>
+                  <p class="info-panel__text mb-0">Puedes mover solo el dinero que ya tienes disponible.</p>
+                </div>
               </div>
+              
             </div>
 
-            <div class="transfer-choice-grid">
-              <button type="button" class="transfer-choice-card" data-bs-toggle="modal" data-bs-target="#withdrawBankModal">
-                <span class="transfer-choice-card__icon">
-                  <i class="fa-solid fa-building-columns"></i>
-                </span>
-                <span class="transfer-choice-card__content">
-                  <span class="transfer-choice-card__title">Entre tus bancos</span>
-                  <span class="transfer-choice-card__text">Elige una de tus cuentas registradas y confirma cuánto quieres mover.</span>
-                </span>
-              </button>
+            <div class="surface-panel deposit-panel h-100">
+              <div class="transfer-panel__header">
+                <div>
+                  <span class="transfer-panel__eyebrow">Paso principal</span>
+                  <h3 class="h4 mb-1">¿Cómo quieres retirar?</h3>
+                  <p class="text-muted mb-0">Escoge una opción y abriremos una ventana con el paso a paso.</p>
+                </div>
+              </div>
+
+              <div class="transfer-choice-grid">
+                <button type="button" class="transfer-choice-card" data-bs-toggle="modal" data-bs-target="#withdrawBankModal">
+                  <span class="transfer-choice-card__icon">
+                    <i class="fa-solid fa-building-columns"></i>
+                  </span>
+                  <span class="transfer-choice-card__content">
+                    <span class="transfer-choice-card__title">Entre tus bancos</span>
+                    <span class="transfer-choice-card__text">Elige una de tus cuentas registradas y confirma cuánto quieres mover.</span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-5 d-none d-xl-block">
+          <div class="surface-panel desktop-guide-card h-100">
+            <span class="desktop-guide-card__eyebrow">Paso a paso</span>
+            <h3 class="desktop-guide-card__title">Como retirar fondos</h3>
+            <div class="desktop-guide-list">
+              <div class="desktop-guide-list__item">
+                <span class="desktop-guide-list__step">1</span>
+                <div>
+                  <strong>Selecciona tu cuenta</strong>
+                  <p class="mb-0 text-muted">Elige a cuál de tus cuentas quieres mover el dinero.</p>
+                </div>
+              </div>
+              <div class="desktop-guide-list__item">
+                <span class="desktop-guide-list__step">2</span>
+                <div>
+                  <strong>Indica el monto</strong>
+                  <p class="mb-0 text-muted">Solo puedes retirar el saldo que ya aparece disponible.</p>
+                </div>
+              </div>
+              <div class="desktop-guide-list__item">
+                <span class="desktop-guide-list__step">3</span>
+                <div>
+                  <strong>Confirma el movimiento</strong>
+                  <p class="mb-0 text-muted">El retiro queda registrado y el saldo se descuenta en la app.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -128,9 +151,6 @@
 
   <script src="../assets/js/layout.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-    crossorigin="anonymous"></script>
   <script src="../assets/js/data.js"></script>
   <script src="../assets/js/retirar.js"></script>
   <script src="../assets/js/main.js"></script>

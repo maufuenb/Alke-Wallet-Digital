@@ -10,6 +10,7 @@ $(function () {
   };
 
   bindLogoutLinks();
+  $(document).on("hidden.bs.modal", ".modal", cleanupModalArtifacts);
 
   if ($.isFunction(pageInitializers[page])) {
     pageInitializers[page]();
