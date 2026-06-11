@@ -23,7 +23,7 @@ function initRetirarPage() {
   const bankSummaryHint = $("#withdrawBankSummaryHint");
 
   const balanceLabel = $("[data-current-balance]");
-  balanceLabel.text(formatCurrency(getWalletState().balance));
+  setBalanceValue(balanceLabel, formatCurrency(getWalletState().balance));
 
   function getBankAccounts() {
     return getWalletState().withdrawalSources?.bankAccounts || [];
@@ -81,7 +81,7 @@ function initRetirarPage() {
       });
     });
 
-    balanceLabel.text(formatCurrency(getWalletState().balance));
+    setBalanceValue(balanceLabel, formatCurrency(getWalletState().balance));
     bankResult
       .removeClass("d-none text-success")
       .addClass("text-warning")

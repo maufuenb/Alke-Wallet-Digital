@@ -31,8 +31,13 @@
             <div class="row g-3 mobile-summary-grid">
               <div class="col-12 col-sm-7 col-lg-7">
                 <div class="info-panel h-100">
-                  <span class="info-panel__label">Saldo disponible</span>
-                  <strong class="info-panel__value" data-available-balance>$ 0</strong>
+                  <div class="balance-header balance-header--compact">
+                    <span class="info-panel__label mb-0">Saldo disponible</span>
+                    <button type="button" class="balance-visibility-toggle" data-balance-toggle aria-label="Ocultar saldo">
+                      <i class="fa-solid fa-eye-slash"></i>
+                    </button>
+                  </div>
+                  <strong class="info-panel__value" data-available-balance data-balance-value>$ 0</strong>
                   <p class="info-panel__text mb-0">Cuando envíes plata, tu saldo se actualiza al instante.</p>
                 </div>
               </div>

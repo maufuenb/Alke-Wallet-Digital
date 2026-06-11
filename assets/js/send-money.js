@@ -93,7 +93,7 @@ function initSendMoneyPage() {
   const state = getWalletState();
 
   renderContactOptions();
-  availableBalance.text(formatCurrency(state.balance));
+  setBalanceValue(availableBalance, formatCurrency(state.balance));
 
   function updateSelectedContactLabel(contact) {
     if (!contact) {

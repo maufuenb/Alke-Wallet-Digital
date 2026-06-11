@@ -22,10 +22,39 @@
 
       <div id="menuMessage" class="alert alert-info d-none mb-4" role="alert" data-flash-message></div>
 
-      <div class="amount-box bg-primary text-white p-4 mb-4">
-        <p class="mb-2">Lo que tienes disponible</p>
-        <div class="display-6 fw-bold" data-wallet-balance>$ 245.000</div>
-        <p class="mb-0 mt-2">Listo para lo que necesites hacer ahora</p>
+      <div class="menu-finance-hero mb-4">
+        <div class="amount-box bg-primary text-white p-4">
+          <div class="balance-header mb-2">
+            <p class="mb-0">Lo que tienes disponible</p>
+            <button type="button" class="balance-visibility-toggle" data-balance-toggle aria-label="Ocultar saldo">
+              <i class="fa-solid fa-eye-slash"></i>
+            </button>
+          </div>
+          <div class="display-6 fw-bold" data-wallet-balance data-balance-value>$ 245.000</div>
+          <p class="mb-0 mt-2">Listo para lo que necesites hacer ahora</p>
+          <button type="button" class="btn btn-outline-primary wallet-card-trigger d-lg-none mt-3" data-bs-toggle="modal"
+            data-bs-target="#virtualCardAccessModal">
+            Ver mi tarjeta virtual
+          </button>
+        </div>
+
+        <div class="wallet-card-demo d-none d-lg-grid" aria-label="Tarjeta virtual demo">
+          <div class="wallet-card-demo__top">
+            <span class="wallet-card-demo__type">Virtual</span>
+            <img src="https://assets.codepen.io/14762/airwallex-virtual.svg" alt="Airwallex">
+          </div>
+          <div class="wallet-card-demo__chip">
+            <span></span>
+          </div>
+          <div class="wallet-card-demo__number">**** 1842</div>
+          <div class="wallet-card-demo__bottom">
+            <div class="wallet-card-demo__holder">
+              <p>Cardholder</p>
+              <p>Usuario Demo</p>
+            </div>
+            <img src="https://assets.codepen.io/14762/visa-virtual.svg" alt="Visa">
+          </div>
+        </div>
       </div>
 
       <div class="row g-3 mb-4">
@@ -115,6 +144,61 @@
         </div>
       </div>
     </section>
+  </template>
+
+  <template data-page-extra>
+    <div class="modal fade" id="virtualCardAccessModal" tabindex="-1" aria-labelledby="virtualCardAccessModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div>
+              <span class="section-heading__eyebrow d-block">Acceso protegido</span>
+              <h2 class="modal-title fs-5" id="virtualCardAccessModalLabel">Ver mi tarjeta virtual</h2>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <form id="virtualCardAccessForm" novalidate>
+              <div class="mb-3">
+                <label for="virtualCardPassword" class="form-label">Ingresa tu clave</label>
+                <div class="login-input-wrap">
+                  <span class="login-input-wrap__icon"><i class="fa-solid fa-key"></i></span>
+                  <input type="password" class="form-control form-control-lg login-input-wrap__control" id="virtualCardPassword"
+                    placeholder="Ingresa tu contraseña" required>
+                  <button type="button" class="login-input-wrap__action" id="toggleVirtualCardPassword" aria-label="Mostrar contraseña">
+                    <i class="fa-solid fa-eye"></i>
+                  </button>
+                </div>
+                <div class="form-text">Usa la misma clave con la que iniciaste sesión.</div>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100">Mostrar tarjeta</button>
+              <div id="virtualCardAccessMessage" class="alert d-none mt-3 mb-0" role="alert"></div>
+            </form>
+
+            <div class="wallet-card-modal-view d-none mt-4" data-virtual-card-panel>
+              <div class="wallet-card-demo wallet-card-demo--modal" aria-label="Tarjeta virtual">
+                <div class="wallet-card-demo__top">
+                  <span class="wallet-card-demo__type">Virtual</span>
+                  <img src="https://assets.codepen.io/14762/airwallex-virtual.svg" alt="Airwallex">
+                </div>
+                <div class="wallet-card-demo__chip">
+                  <span></span>
+                </div>
+                <div class="wallet-card-demo__number">**** 1842</div>
+                <div class="wallet-card-demo__bottom">
+                  <div class="wallet-card-demo__holder">
+                    <p>Cardholder</p>
+                    <p>Usuario Demo</p>
+                  </div>
+                  <img src="https://assets.codepen.io/14762/visa-virtual.svg" alt="Visa">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </template>
 
   <script src="../assets/js/layout.js"></script>

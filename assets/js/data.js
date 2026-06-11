@@ -1,4 +1,5 @@
 const WALLET_KEY = "walletAppState";
+const BALANCE_VISIBILITY_KEY = "walletBalanceVisibility";
 const WALLET_DEFAULTS = {
   loggedIn: false,
   user: {
@@ -276,6 +277,63 @@ function navigateTo(url, delay = 0) {
   setTimeout(() => {
     $(location).attr("href", url);
   }, delay);
+}
+
+function getBalanceVisibility() {
+  const saved = localStorage.getItem(BALANCE_VISIBILITY_KEY);
+  return saved !== "hidden";
+}
+
+function setBalanceVisibility(isVisible) {
+  localStorage.setItem(BALANCE_VISIBILITY_KEY, isVisible ? "visible" : "hidden");
+}
+
+function getMaskedBalanceText(valueText) {
+  const normalized = String(valueText || "").trim();
+
+  if (!normalized) {
+    return "••••••";
+  }
+
+  return normalized.includes("$") ? "$ ••••••" : "••••••";
+}
+
+function setBalanceValue(element, valueText) {
+  $(element).each(function () {
+    const target = $(this);
+    const normalizedValue = String(valueText || "").trim();
+    target.attr("data-balance-visible-value", normalizedValue);
+    target.text(getBalanceVisibility() ? normalizedValue : getMaskedBalanceText(normalizedValue));
+  });
+}
+
+function syncBalanceVisibility(scope = document) {
+  const isVisible = getBalanceVisibility();
+
+  $(scope).find("[data-balance-value]").each(function () {
+    const target = $(this);
+    const visibleValue = target.attr("data-balance-visible-value") || String(target.text() || "").trim();
+    target.attr("data-balance-visible-value", visibleValue);
+    target.text(isVisible ? visibleValue : getMaskedBalanceText(visibleValue));
+  });
+
+  $(scope).find("[data-balance-toggle]").each(function () {
+    const button = $(this);
+    const icon = button.find("i");
+    button.attr("aria-label", isVisible ? "Ocultar saldo" : "Mostrar saldo");
+    button.attr("title", isVisible ? "Ocultar saldo" : "Mostrar saldo");
+
+    if (icon.length) {
+      icon.attr("class", `fa-solid ${isVisible ? "fa-eye-slash" : "fa-eye"}`);
+    }
+  });
+}
+
+function bindBalanceVisibilityToggle(scope = document) {
+  $(scope).find("[data-balance-toggle]").off("click.balanceVisibility").on("click.balanceVisibility", function () {
+    setBalanceVisibility(!getBalanceVisibility());
+    syncBalanceVisibility(document);
+  });
 }
 
 function cleanupModalArtifacts() {

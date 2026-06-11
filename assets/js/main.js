@@ -10,9 +10,12 @@ $(function () {
   };
 
   bindLogoutLinks();
+  bindBalanceVisibilityToggle();
   $(document).on("hidden.bs.modal", ".modal", cleanupModalArtifacts);
 
   if ($.isFunction(pageInitializers[page])) {
     pageInitializers[page]();
   }
+
+  syncBalanceVisibility();
 });

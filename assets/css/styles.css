@@ -521,6 +521,38 @@ textarea {
     color: rgba(255, 255, 255, 0.82);
 }
 
+.balance-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.balance-header--compact {
+    margin-bottom: 0.15rem;
+}
+
+.balance-visibility-toggle {
+    width: 2.2rem;
+    height: 2.2rem;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--app-text);
+    background-color: rgba(255, 255, 255, 0.04);
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.balance-visibility-toggle:hover,
+.balance-visibility-toggle:focus {
+    color: var(--app-accent);
+    border-color: rgba(200, 255, 87, 0.28);
+    background-color: rgba(200, 255, 87, 0.08);
+}
+
 .amount-box [data-wallet-balance],
 .amount-box [data-current-balance],
 .amount-box [data-available-balance] {
@@ -531,6 +563,125 @@ textarea {
 .amount-box {
     position: relative;
     overflow: hidden;
+}
+
+.menu-finance-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(280px, 360px);
+    gap: 1.25rem;
+    align-items: stretch;
+}
+
+.wallet-card-demo {
+    min-height: 100%;
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr auto auto;
+    gap: 1.15rem;
+    padding: 1.35rem;
+    border-radius: 1.2rem;
+    overflow: hidden;
+    border: 1px solid rgba(200, 255, 87, 0.18);
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.06)),
+        url("https://assets.codepen.io/14762/egg-sour.jpg") center / cover no-repeat;
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.24);
+    color: #171b12;
+}
+
+.wallet-card-demo::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(120deg, rgba(255, 255, 255, 0.1) 20%, rgba(255, 255, 255, 0.34) 42%, rgba(255, 255, 255, 0.08) 42%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08));
+    mix-blend-mode: screen;
+    pointer-events: none;
+}
+
+.wallet-card-demo > * {
+    position: relative;
+    z-index: 1;
+}
+
+.wallet-card-demo__top,
+.wallet-card-demo__bottom {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.wallet-card-demo__top img {
+    height: 1.1rem;
+}
+
+.wallet-card-demo__type {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+}
+
+.wallet-card-demo__chip {
+    display: flex;
+    align-items: center;
+}
+
+.wallet-card-demo__chip span {
+    width: 3rem;
+    height: 2rem;
+    border-radius: 0.55rem;
+    display: inline-block;
+    background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.14)),
+        linear-gradient(90deg, rgba(23, 27, 18, 0.22), rgba(255, 255, 255, 0.08));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.wallet-card-demo__number {
+    font-family: var(--app-font-display);
+    font-size: 1.5rem;
+    letter-spacing: 0.08em;
+    color: #14190f;
+}
+
+.wallet-card-demo__holder p {
+    margin: 0;
+}
+
+.wallet-card-demo__holder p:first-child {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    opacity: 0.8;
+    margin-bottom: 0.35rem;
+}
+
+.wallet-card-demo__holder p:last-child {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.wallet-card-demo__bottom img {
+    height: 2.2rem;
+    align-self: flex-end;
+}
+
+.wallet-card-trigger {
+    align-self: flex-start;
+}
+
+.wallet-card-demo--modal {
+    min-height: 220px;
+    width: 100%;
+}
+
+.wallet-card-modal-view {
+    border-top: 1px solid var(--app-border);
+    padding-top: 1rem;
 }
 
 .quick-action {
@@ -1931,6 +2082,26 @@ textarea,
         max-width: none;
     }
 
+    .menu-finance-hero {
+        grid-template-columns: 1fr;
+    }
+
+    .wallet-card-demo {
+        min-height: 210px;
+        max-width: 100%;
+    }
+
+    .wallet-card-trigger {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .balance-visibility-toggle {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 0.75rem;
+    }
+
     .amount-box {
         background:
             radial-gradient(circle at top left, rgba(200, 255, 87, 0.22), transparent 32%),
@@ -2178,6 +2349,19 @@ textarea,
         border-color: rgba(200, 255, 87, 0.1) !important;
     }
 
+    .transfer-choice-card {
+        display: flex;
+        flex-direction: column;
+        grid-template-columns: none;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .transfer-choice-card__content {
+        padding-top: 0;
+        width: 100%;
+    }
+
     .sidebar .nav {
         gap: 0.75rem !important;
     }
@@ -2233,6 +2417,19 @@ textarea,
         max-width: 860px;
         margin-left: auto;
         margin-right: auto;
+    }
+
+    [data-page="menu"] .menu-finance-hero {
+        grid-template-columns: minmax(0, 1fr) 340px;
+        max-width: 1120px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    [data-page="menu"] .amount-box {
+        max-width: none;
+        margin-left: 0;
+        margin-right: 0;
     }
 
     [data-page="menu"] .quick-action {

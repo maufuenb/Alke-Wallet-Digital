@@ -70,7 +70,7 @@ function initDepositPage() {
   const balanceLabel = $("[data-current-balance]");
   const state = getWalletState();
 
-  balanceLabel.text(formatCurrency(state.balance));
+  setBalanceValue(balanceLabel, formatCurrency(state.balance));
 
   function getBanks() {
     return getWalletState().depositSources?.banks || [];
@@ -178,7 +178,7 @@ function initDepositPage() {
       });
     });
 
-    balanceLabel.text(formatCurrency(getWalletState().balance));
+    setBalanceValue(balanceLabel, formatCurrency(getWalletState().balance));
     summaryElement
       .removeClass("d-none text-warning")
       .addClass("text-success")
