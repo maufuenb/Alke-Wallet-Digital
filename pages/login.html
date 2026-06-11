@@ -9,6 +9,7 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/pages/login.css">
 </head>
 
 <body data-page="login" data-layout="auth" data-title="Inicio de sesión | Billetera Digital">
@@ -26,7 +27,7 @@
 
               <div class="login-stage__copy">
                 <h2>Tu plata en una vista más clara, rápida y moderna.</h2>
-                <p class="text-muted mb-0">Entra a una experiencia simple para revisar tu saldo y mover dinero sin ruido ni pasos innecesarios.</p>
+                <p class="text-muted mb-0">Entra a una experiencia simple para revisar tu saldo y mover sin pasos innecesarios.</p>
               </div>
 
               <div class="login-stage__board mt-4">
@@ -56,8 +57,12 @@
             </section>
           </div>
 
-          <div class="col-12 col-lg-6 col-xl-5">
+          <div class="col-12 col-lg-6 col-xl-5" data-auth-login-panel>
             <section class="card simple-card border-0 p-4 p-md-5 h-100 login-panel">
+              <button type="button" class="btn btn-outline-secondary btn-sm login-panel__close d-lg-none" data-auth-login-close
+                aria-label="Cerrar acceso">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
               <div class="login-panel__header mb-4">
                 <span class="login-panel__eyebrow">Acceso seguro</span>
                 <h2 class="mb-1">Bienvenido de vuelta</h2>

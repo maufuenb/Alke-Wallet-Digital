@@ -165,7 +165,10 @@
             <div class="d-flex align-items-center gap-2">
               ${getBrandMarkup()}
             </div>
-            <span class="text-muted small">Acceso seguro</span>
+            <span class="text-muted small d-none d-sm-inline">Acceso seguro</span>
+            <button type="button" class="btn btn-outline-primary btn-sm d-sm-none auth-login-toggle" data-auth-login-toggle>
+              Ingresar
+            </button>
           </div>
         </header>
 
@@ -182,6 +185,66 @@
 
       ${extraContent}
     `;
+
+    const authLoginToggle = root.querySelector("[data-auth-login-toggle]");
+    const authLoginPanel = root.querySelector("[data-auth-login-panel]");
+    const authLoginClose = root.querySelector("[data-auth-login-close]");
+    const authMobileQuery = window.matchMedia("(max-width: 575.98px)");
+
+    function openAuthLoginModal() {
+      body.classList.add("auth-login-open");
+
+      window.setTimeout(() => {
+        const firstField = authLoginPanel?.querySelector("#email");
+        if (firstField) {
+          firstField.focus();
+        }
+      }, 120);
+    }
+
+    function closeAuthLoginModal() {
+      body.classList.remove("auth-login-open");
+    }
+
+    if (authLoginToggle && authLoginPanel) {
+      authLoginToggle.addEventListener("click", () => {
+        if (!authMobileQuery.matches) {
+          return;
+        }
+
+        openAuthLoginModal();
+      });
+
+      authLoginPanel.addEventListener("click", (event) => {
+        if (!authMobileQuery.matches) {
+          return;
+        }
+
+        if (event.target === authLoginPanel) {
+          closeAuthLoginModal();
+        }
+      });
+    }
+
+    if (authLoginClose) {
+      authLoginClose.addEventListener("click", () => {
+        closeAuthLoginModal();
+      });
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && body.classList.contains("auth-login-open")) {
+        closeAuthLoginModal();
+      }
+    });
+
+    if (authMobileQuery.addEventListener) {
+      authMobileQuery.addEventListener("change", (event) => {
+        if (!event.matches) {
+          closeAuthLoginModal();
+        }
+      });
+    }
   }
 
   function renderAppLayout() {

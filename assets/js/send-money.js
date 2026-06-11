@@ -91,6 +91,7 @@ function initSendMoneyPage() {
   const contactBank = $("#contactBank");
   const selectedContactLabel = $("[data-selected-contact-label]");
   const state = getWalletState();
+  let preserveTransferSelection = false;
 
   renderContactOptions();
   setBalanceValue(availableBalance, formatCurrency(state.balance));
@@ -124,6 +125,7 @@ function initSendMoneyPage() {
     updateSelectedContactLabel(contact);
 
     if (existingContactModalElement.hasClass("show")) {
+      preserveTransferSelection = true;
       transitionBetweenModals(existingContactModalElement, amountModalElement, () => transferAmount.trigger("focus"));
       return;
     }
@@ -134,10 +136,19 @@ function initSendMoneyPage() {
   function resetTransferFlow() {
     transferForm.trigger("reset");
     hideAlert(transferMessage);
+    transferAmount.val("");
     contactSelect.val("");
+    syncCustomSelect(contactSelect);
+    contactSearch.val("");
+    hideAutocomplete();
     contactChips.find(".contact-chip").removeClass("active");
     existingContactTrigger.removeClass("active");
     updateSelectedContactLabel(null);
+  }
+
+  function resetContactForm() {
+    contactForm.trigger("reset");
+    hideAlert(contactMessage);
   }
 
   function selectContact(contactId) {
@@ -203,8 +214,7 @@ function initSendMoneyPage() {
 
   if (cancelButton.length) {
     cancelButton.on("click", () => {
-      contactForm.trigger("reset");
-      hideAlert(contactMessage);
+      resetContactForm();
       if (contactModal) {
         contactModal.hide();
       }
@@ -313,11 +323,22 @@ function initSendMoneyPage() {
   });
 
   existingContactModalElement.on("hidden.bs.modal", function () {
-    existingContactTrigger.removeClass("active");
+    if (preserveTransferSelection) {
+      preserveTransferSelection = false;
+      existingContactTrigger.removeClass("active");
+      hideAutocomplete();
+      return;
+    }
+
+    resetTransferFlow();
   });
 
   amountModalElement.on("hidden.bs.modal", function () {
-    hideAlert(transferMessage);
+    resetTransferFlow();
+  });
+
+  contactModalElement.on("hidden.bs.modal", function () {
+    resetContactForm();
   });
 
   if (transferForm.length) {

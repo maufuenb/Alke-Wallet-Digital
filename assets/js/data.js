@@ -126,16 +126,48 @@ function cloneWalletDefaults() {
 
 function getWalletState() {
   const saved = localStorage.getItem(WALLET_KEY);
+  const defaults = cloneWalletDefaults();
 
   if (!saved) {
-    const defaults = cloneWalletDefaults();
     saveWalletState(defaults);
     return defaults;
   }
 
-  const parsedState = JSON.parse(saved);
-  const mergedState = $.extend(true, cloneWalletDefaults(), parsedState);
-  mergedState.withdrawalSources = $.extend(true, {}, cloneWalletDefaults().withdrawalSources);
+  let parsedState;
+
+  try {
+    parsedState = JSON.parse(saved);
+  } catch (error) {
+    saveWalletState(defaults);
+    return defaults;
+  }
+
+  if (!parsedState || typeof parsedState !== "object") {
+    saveWalletState(defaults);
+    return defaults;
+  }
+
+  const mergedState = $.extend(true, {}, defaults, parsedState);
+
+  if (!Array.isArray(mergedState.contacts)) {
+    mergedState.contacts = defaults.contacts;
+  }
+
+  if (!Array.isArray(mergedState.movements)) {
+    mergedState.movements = defaults.movements;
+  }
+
+  if (!Array.isArray(mergedState.depositSources?.giftCards)) {
+    mergedState.depositSources.giftCards = defaults.depositSources.giftCards;
+  }
+
+  if (!Array.isArray(mergedState.depositSources?.banks)) {
+    mergedState.depositSources.banks = defaults.depositSources.banks;
+  }
+
+  if (!Array.isArray(mergedState.withdrawalSources?.bankAccounts)) {
+    mergedState.withdrawalSources.bankAccounts = defaults.withdrawalSources.bankAccounts;
+  }
 
   if (JSON.stringify(parsedState) !== JSON.stringify(mergedState)) {
     saveWalletState(mergedState);
